@@ -8,10 +8,15 @@ public class Program
     {
         await sqlDataFetch.SQLDataFetchAsync(DatabaseCredentials.Instance.GetConnectionString());
         Console.WriteLine();
-        await getRequest.GetRequestAsync(
+
+        bool? productFound = await getRequest.GetRequestAsync(
             endpoint: "products",
             queryFilter: "869239349201"
             );
 
+        if (productFound == false)
+        {
+            // Perform desired actions when the product is not found
+        }
     }
 }

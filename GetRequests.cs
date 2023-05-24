@@ -11,8 +11,7 @@ namespace APITesterPrestaShop
         static PrestaShopAuthentication prestaShopAuth = PrestaShopAuthentication.Instance;
         static DebugMode _debug = new DebugMode();
 
-
-        public async Task<int?> GetRequestAsync(string endpoint, string queryFilter)
+        public async Task<bool?> GetRequestAsync(string endpoint, string queryFilter)
         {
             prestaShopAuth.SetEndpoint(endpoint);
             prestaShopAuth.SetQueryFilter(queryFilter);
@@ -28,7 +27,7 @@ namespace APITesterPrestaShop
                 HttpContent httpContent = response.Content;
                 string responseContent = await httpContent.ReadAsStringAsync();
                 int productId;
-
+                
                 if (response.StatusCode is HttpStatusCode.OK)
                 {
                     // Print the response status code
@@ -43,13 +42,14 @@ namespace APITesterPrestaShop
                             productId = products.Products[0].Id;
                             Console.WriteLine($"Product barcode: {prestaShopAuth.PrestashopQueryFilter}");
                             Console.WriteLine($"Product ID: {products.Products[0].Id}");
-                            return productId;
+                            
+                            return true;
                         }
                     }
                     else
                     {
                         Console.WriteLine("No products found.");
-                        return null;
+                        return false;
                     }
 
                 }
